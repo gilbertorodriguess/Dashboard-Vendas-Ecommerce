@@ -1,7 +1,7 @@
-# Dashboard de Análise de Vendas para E-commerce
+# Dashboard de Análise de Vendas para E-commerce (Projeto de Portfólio)
 
 ## 📄 Resumo do Projeto
-Este projeto tem como objetivo analisar um banco de dados de um e-commerce simulado, utilizando SQL para extrair e preparar os dados e o Power BI para criar visualizações e dashboards que gerem insights de negócio.
+Este projeto consiste em uma análise completa de um banco de dados de e-commerce simulado para o ano de 2025. O objetivo foi responder a 5 perguntas de negócio chave, utilizando SQL para a extração e preparação dos dados e o Power BI para a criação de um dashboard interativo de 3 páginas, destinado a apoiar a tomada de decisão das equipes de Vendas, Marketing e Produto.
 
 ## 🛠️ Ferramentas Utilizadas
 * **Banco de Dados:** MySQL
@@ -10,14 +10,90 @@ Este projeto tem como objetivo analisar um banco de dados de um e-commerce simul
 
 ---
 
-## 📈 Análise 1: Performance Geográfica
-A primeira análise busca entender a performance de vendas e o número de clientes por cidade, para identificar os principais mercados.
+## 📈 Análises Realizadas (As 5 Tarefas)
+Foram desenvolvidas 5 consultas SQL para extrair os seguintes insights:
 
-### Código SQL Utilizado
-```sql
+1.  **KPIs Gerais:** Cálculo do faturamento total, número de pedidos e total de clientes ativos.
+2.  **Ranking de Popularidade:** Identificação dos TOP 5 produtos mais vendidos por frequência.
+3.  **Análise Geográfica:** Mapeamento do faturamento e do número de clientes por cidade.
+4.  **Oportunidades de Cross-sell:** Segmentação de produtos da categoria "Acessórios" com baixa performance de vendas.
+5.  **Análise de Recência:** Identificação de clientes ativos no segundo semestre para campanhas de CRM.
+
+---
+
+## 📊 Dashboard Final no Power BI
+O resultado de todas as análises foi consolidado em um dashboard de 3 páginas no Power BI.
+
+### Página 1: Resumo Gerencial
+Visão macro dos principais indicadores de performance do negócio.
+
+
+![pagina1](https://github.com/user-attachments/assets/f5b878f6-57a1-4b11-aa64-9b800f9ac185)
+
+
+
+### Página 2: Análise de Produtos
+Visão detalhada sobre os produtos campeões de venda e as oportunidades de melhoria.
+
+
+![pagina2](https://github.com/user-attachments/assets/7bd5f080-af2a-489b-a0a3-8d1f699aeaf2)
+
+
+
+### Página 3: Análise de Clientes e Geografia
+Visão sobre o perfil e a localização dos clientes, identificando os principais mercados e os clientes mais recentes.
+
+
+
+![pagina3](https://github.com/user-attachments/assets/789645ff-c802-4d66-b5f4-2c5738415fe3)
+
+
+---
+
+## 👨‍💻 Scripts SQL
+
+
+-- Consulta que mostra o faturamento total e quantidade de pedidos feitos no ano de 2025 alem de da quantidade de clientes que fizeram alguma compra--
+
+SELECT
+    SUM(pro.preco * pe.quantidade) AS faturamento_total,
+    COUNT(pe.id_pedido) AS total_pedidos, -- Corrigido para contar pedidos
+    COUNT(DISTINCT c.id_cliente) AS clientes_que_compraram_algo
+FROM
+    Clientes AS c
+INNER JOIN
+    Pedidos AS pe ON c.id_cliente = pe.id_cliente
+INNER JOIN
+    Produtos AS pro ON pe.id_produto = pro.id_produto
+WHERE
+    pe.data_pedido BETWEEN '2025-01-01' AND '2025-12-31';
+
+---
+
+-- A consulta mostra o nome do produto e se limita a mostrar apenas os 5 primeiros--
+
+SELECT
+    pro.nome_produto,
+    COUNT(pe.id_pedido) AS produtos_mais_pedidos
+FROM
+    Produtos AS pro
+INNER JOIN
+    Pedidos AS pe ON pro.id_produto = pe.id_produto
+WHERE
+    pe.data_pedido BETWEEN '2025-01-01' AND '2025-12-31'
+GROUP BY
+    pro.nome_produto
+ORDER BY
+    produtos_mais_pedidos DESC
+LIMIT 5;
+
+---
+
+-- A consulta mostra a o numero de clientes e o faturamento total das vendas, agrupando nas cidades ao quais os clientes pertencem--
+
 SELECT
     c.cidade,
-    COUNT(DISTINCT c.id_cliente) AS numero_de_clientes_distintos,
+    COUNT(DISTINCT c.id_cliente) AS numero_de_clientes_distintos, -- Corrigido "destintos"
     SUM(pro.preco * pe.quantidade) AS faturamento_total
 FROM
     Clientes AS c
@@ -29,12 +105,48 @@ GROUP BY
     c.cidade
 ORDER BY
     faturamento_total DESC;
-```
 
-### Principais Insights
-* A consulta mostra o número de clientes e o faturamento total das vendas, agrupando nas cidades às quais os clientes pertencem.
 
 ---
 
-## 📊 Visualização Final (Dashboard)
-![github](https://github.com/user-attachments/assets/639784eb-1755-490f-a6e2-603f8cdbd0cd)
+
+-- A onsulta dessa vez, mostra o produto e a categoria, daqueles que tiveram uma baixa expressao em suas vendas, no caso abaixo de 3 --
+
+SELECT
+    pro.nome_produto,
+    pro.categoria,
+    COUNT(pe.id_pedido) AS numero_de_vendas
+FROM
+    Produtos AS pro
+INNER JOIN
+    Pedidos AS pe ON pro.id_produto = pe.id_produto
+WHERE
+    pro.categoria = 'Acessórios'
+GROUP BY
+    pro.nome_produto,
+    pro.categoria
+HAVING
+    COUNT(pe.id_pedido) < 3
+ORDER BY
+    numero_de_vendas DESC;
+
+   ---
+
+   -- Mostra o nome e email, daqueles que fizeram uma compra no segundo semestre em diante--
+
+SELECT DISTINCT -- Usar DISTINCT é mais direto aqui
+    c.nome,
+    c.email
+FROM
+    Clientes AS c
+INNER JOIN
+    Pedidos AS pe ON c.id_cliente = pe.id_cliente
+WHERE
+    pe.data_pedido >= '2025-07-01';
+     
+
+
+## 💡 Principais Insights Gerados
+* A análise geográfica revelou que a cidade de São Paulo é o principal mercado, concentrando a maior parte do faturamento e dos clientes.
+* Foi identificado que os produtos mais populares em frequência de vendas (ex: 'Teclado Mecânico') não são necessariamente os de maior faturamento ('Notebook Gamer'), sugerindo estratégias diferentes para cada um.
+* Uma lista de clientes de alto potencial para campanhas de fidelização e reativação foi gerada com base em critérios de frequência e recência de compra.
