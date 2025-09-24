@@ -36,7 +36,7 @@ Visão macro dos principais indicadores de performance do negócio.
 Visão detalhada sobre os produtos campeões de venda e as oportunidades de melhoria.
 
 
-![pagina2](https://github.com/user-attachments/assets/7bd5f080-af2a-489b-a0a3-8d1f699aeaf2)
+![pagina2](https://github.com/user-attachments/assets/a5cd51b9-9003-4d83-9a26-256017928fc8)
 
 
 
