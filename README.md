@@ -52,12 +52,12 @@ Visão sobre o perfil e a localização dos clientes, identificando os principai
 
 ## 👨‍💻 Scripts SQL
 
-
--- Consulta que mostra o faturamento total e quantidade de pedidos feitos no ano de 2025 alem de da quantidade de clientes que fizeram alguma compra--
-
+### Tarefa 1: KPIs Gerais do Negócio
+-- A consulta mostra o faturamento total, o número de pedidos e a quantidade de clientes que fizeram alguma compra em 2025.
+```sql
 SELECT
     SUM(pro.preco * pe.quantidade) AS faturamento_total,
-    COUNT(pe.id_pedido) AS total_pedidos, -- Corrigido para contar pedidos
+    COUNT(pe.id_pedido) AS total_pedidos,
     COUNT(DISTINCT c.id_cliente) AS clientes_que_compraram_algo
 FROM
     Clientes AS c
@@ -67,82 +67,6 @@ INNER JOIN
     Produtos AS pro ON pe.id_produto = pro.id_produto
 WHERE
     pe.data_pedido BETWEEN '2025-01-01' AND '2025-12-31';
-
----
-
--- A consulta mostra o nome do produto e se limita a mostrar apenas os 5 primeiros--
-
-SELECT
-    pro.nome_produto,
-    COUNT(pe.id_pedido) AS produtos_mais_pedidos
-FROM
-    Produtos AS pro
-INNER JOIN
-    Pedidos AS pe ON pro.id_produto = pe.id_produto
-WHERE
-    pe.data_pedido BETWEEN '2025-01-01' AND '2025-12-31'
-GROUP BY
-    pro.nome_produto
-ORDER BY
-    produtos_mais_pedidos DESC
-LIMIT 5;
-
----
-
--- A consulta mostra a o numero de clientes e o faturamento total das vendas, agrupando nas cidades ao quais os clientes pertencem--
-
-SELECT
-    c.cidade,
-    COUNT(DISTINCT c.id_cliente) AS numero_de_clientes_distintos, -- Corrigido "destintos"
-    SUM(pro.preco * pe.quantidade) AS faturamento_total
-FROM
-    Clientes AS c
-INNER JOIN
-    Pedidos AS pe ON c.id_cliente = pe.id_cliente
-INNER JOIN
-    Produtos AS pro ON pe.id_produto = pro.id_produto
-GROUP BY
-    c.cidade
-ORDER BY
-    faturamento_total DESC;
-
-
----
-
-
--- A onsulta dessa vez, mostra o produto e a categoria, daqueles que tiveram uma baixa expressao em suas vendas, no caso abaixo de 3 --
-
-SELECT
-    pro.nome_produto,
-    pro.categoria,
-    COUNT(pe.id_pedido) AS numero_de_vendas
-FROM
-    Produtos AS pro
-INNER JOIN
-    Pedidos AS pe ON pro.id_produto = pe.id_produto
-WHERE
-    pro.categoria = 'Acessórios'
-GROUP BY
-    pro.nome_produto,
-    pro.categoria
-HAVING
-    COUNT(pe.id_pedido) < 3
-ORDER BY
-    numero_de_vendas DESC;
-
-   ---
-
-   -- Mostra o nome e email, daqueles que fizeram uma compra no segundo semestre em diante--
-
-SELECT DISTINCT -- Usar DISTINCT é mais direto aqui
-    c.nome,
-    c.email
-FROM
-    Clientes AS c
-INNER JOIN
-    Pedidos AS pe ON c.id_cliente = pe.id_cliente
-WHERE
-    pe.data_pedido >= '2025-07-01';
      
 
 
