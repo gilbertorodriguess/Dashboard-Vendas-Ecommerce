@@ -67,6 +67,23 @@ INNER JOIN
     Produtos AS pro ON pe.id_produto = pro.id_produto
 WHERE
     pe.data_pedido BETWEEN '2025-01-01' AND '2025-12-31';
+
+-- A consulta mostra o nome do produto e se limita a mostrar apenas os 5 primeiros--
+
+SELECT
+    pro.nome_produto,
+    COUNT(pe.id_pedido) AS numero_de_vendas
+FROM
+    Produtos AS pro
+INNER JOIN
+    Pedidos AS pe ON pro.id_produto = pro.id_produto
+WHERE
+    YEAR(pe.data_pedido) = 2025
+GROUP BY
+    pro.nome_produto
+ORDER BY
+    numero_de_vendas DESC
+LIMIT 5;
      
 
 
