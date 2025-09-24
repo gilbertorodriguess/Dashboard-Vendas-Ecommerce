@@ -1,4 +1,4 @@
-# Dashboard de Análise de Vendas para E-commerce (Projeto de Portfólio)
+# Dashboard de Análise de Vendas para E-commerce
 
 ## 📄 Resumo do Projeto
 Este projeto consiste em uma análise completa de um banco de dados de e-commerce simulado para o ano de 2025. O objetivo foi responder a 5 perguntas de negócio chave, utilizando SQL para a extração e preparação dos dados e o Power BI para a criação de um dashboard interativo de 3 páginas, destinado a apoiar a tomada de decisão das equipes de Vendas, Marketing e Produto.
