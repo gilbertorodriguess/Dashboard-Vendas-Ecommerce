@@ -52,7 +52,7 @@ Visão sobre o perfil e a localização dos clientes, identificando os principai
 
 ## 👨‍💻 Scripts SQL
 
-### Tarefa 1: KPIs Gerais do Negócio
+### Tarefa Principal: KPIs Gerais do Negócio
 -- A consulta mostra o faturamento total, o número de pedidos e a quantidade de clientes que fizeram alguma compra em 2025.
 ```sql
 SELECT
