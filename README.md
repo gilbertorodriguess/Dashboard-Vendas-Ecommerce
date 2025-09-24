@@ -33,7 +33,7 @@ Visão macro dos principais indicadores de performance do negócio.
 
 
 ### Página 2: Análise de Produtos
-Visão detalhada sobre os produtos campeões de venda e as oportunidades de melhoria.
+Visão detalhada sobre os produtos campeões de venda e as oportunidades de melhoria. No caso, a tabela ao lado mostra que, mesmo eles sendo os campeões de vendas, não necessariamente são os que dão mais lucro.
 
 
 ![pagina2](https://github.com/user-attachments/assets/a5cd51b9-9003-4d83-9a26-256017928fc8)
